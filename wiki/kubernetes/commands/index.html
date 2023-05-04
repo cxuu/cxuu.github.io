@@ -13,6 +13,12 @@
 </pre></td><td class="rouge-code"><pre>kubectl <span class="nb">exec</span> <span class="k">${</span><span class="nv">POD_NAME</span><span class="k">}</span> <span class="nt">--</span> <span class="nb">echo </span>hello world
 
 kubectl <span class="nb">exec</span> <span class="k">${</span><span class="nv">POD_NAME</span><span class="k">}</span> <span class="nt">-c</span> <span class="k">${</span><span class="nv">CONTAINER_NAME</span><span class="k">}</span> <span class="nt">--</span> curl https://www.example.org
+</pre></td></tr></tbody></table></code></pre></div></div> <p>By label</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="se">\</span>
+  <span class="si">$(</span>kubectl get pod <span class="nt">-n</span> my-namespace <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>myapp <span class="nt">--output</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">={</span>.items..metadata.name<span class="o">}</span><span class="si">)</span> <span class="se">\</span>
+  <span class="nt">-n</span> my-namespace <span class="nt">-c</span> <span class="nb">sleep</span> <span class="nt">--</span> bash
 </pre></td></tr></tbody></table></code></pre></div></div> <h4 id="open-a-shell-to-a-pod">Open a shell to a Pod</h4> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="k">${</span><span class="nv">POD_NAME</span><span class="k">}</span> <span class="nt">--</span> bash
 </pre></td></tr></tbody></table></code></pre></div></div> <h4 id="spin-up-a-debug-pod-and-open-a-shell-to-it">Spin up a debug Pod and open a shell to it</h4> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
