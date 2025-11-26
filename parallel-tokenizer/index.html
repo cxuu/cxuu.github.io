@@ -1,0 +1,446 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <link rel="icon" href="/assets/images/logo.png"> <title>3.3x Faster HuggingFace Tokenizers for Single Sequence | Charles Xu</title> <title>3.3x Faster HuggingFace Tokenizers for Single Sequence | Charles Xu</title> <meta name="generator" content="Jekyll v4.3.2"/> <meta property="og:title" content="3.3x Faster HuggingFace Tokenizers for Single Sequence"/> <meta property="og:locale" content="en_US"/> <meta name="description" content="I made HuggingFace tokenizers 3.3x faster by parallelizing single-input tokenization with overlapping chunks, zero-copy offset operations, SIMD-accelerated boundary detection, and cache-hierarchy-aware chunking. The result is bit-identical to serial encoding. Fast tokenization is critical to achieve low TTFT given long context."/> <meta property="og:description" content="I made HuggingFace tokenizers 3.3x faster by parallelizing single-input tokenization with overlapping chunks, zero-copy offset operations, SIMD-accelerated boundary detection, and cache-hierarchy-aware chunking. The result is bit-identical to serial encoding. Fast tokenization is critical to achieve low TTFT given long context."/> <meta property="og:site_name" content="Charles Xu"/> <meta property="og:image" content="/assets/images/parallel-tokenizer/cover.png"/> <meta property="og:type" content="article"/> <meta property="article:published_time" content="2025-11-25T00:00:00+00:00"/> <meta name="twitter:card" content="summary_large_image"/> <meta property="twitter:image" content="/assets/images/parallel-tokenizer/cover.png"/> <meta property="twitter:title" content="3.3x Faster HuggingFace Tokenizers for Single Sequence"/> <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-11-25T00:00:00+00:00","datePublished":"2025-11-25T00:00:00+00:00","description":"I made HuggingFace tokenizers 3.3x faster by parallelizing single-input tokenization with overlapping chunks, zero-copy offset operations, SIMD-accelerated boundary detection, and cache-hierarchy-aware chunking. The result is bit-identical to serial encoding. Fast tokenization is critical to achieve low TTFT given long context.","headline":"3.3x Faster HuggingFace Tokenizers for Single Sequence","image":"/assets/images/parallel-tokenizer/cover.png","mainEntityOfPage":{"@type":"WebPage","@id":"/parallel-tokenizer/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"}},"url":"/parallel-tokenizer/"}</script> <link href="/assets/css/bootstrap.min.css" rel="stylesheet"> <script src="/assets/js/jquery.min.js"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-8CYZ0N0EWJ"></script> <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-8CYZ0N0EWJ");</script> <script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-151349369-1","auto"),ga("send","pageview");</script> <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5b6e3d4ee3274005a2d3321f9bb0516c"}'></script> <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> </script> <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0}};</script> </head> <body class="layout-post"> <noscript id="deferred-styles"> <link href="/assets/css/fontawesome.css" rel="stylesheet"> <link href="/assets/css/google-fonts.css" rel="stylesheet"> </noscript> <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down"> <div class="container pr-0"> <a class="navbar-brand" href="/"> <img src="/assets/images/logo.png" alt="Charles Xu" height="32" width="32"> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> <div class="collapse navbar-collapse" id="navbarMediumish"> <ul class="navbar-nav ml-auto"> <li class="nav-item"> <a class="nav-link" href="/about">About</a> </li> <li class="nav-item"> <a class="nav-link" href="/bookshelf">Bookshelf</a> </li> <li class="nav-item"> <a class="nav-link" href="/inspirations">Inspirations</a> </li> <li class="nav-item"> <a class="nav-link" href="/wiki">Wiki</a> </li> <li class="nav-item"> <a class="nav-link" href="/">Blog</a> </li> <script src="/assets/js/lunr.js"></script> <style>.lunrsearchresult .title{color:#d9230f}.lunrsearchresult .url{color:silver}.lunrsearchresult a{display:block;color:#777}.lunrsearchresult a:hover,.lunrsearchresult a:focus{text-decoration:none}.lunrsearchresult a:hover .title{text-decoration:underline}</style> <div style="width: 14px; height: 10px;"></div> <form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);"> <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/> </form> <div id="lunrsearchresults"> <ul></ul> </div> <script src="/assets/js/lunrsearchengine.js"></script> </ul> </div> </div> </nav> <div class="site-content"> <div class="container"> <div class="mainheading"> <h1 class="sitetitle">Charles Xu</h1> <p class="lead"> Essays, books, wiki on technologies, career, markets, and more. </p> </div> <div id="loading"> <div id="loading-image" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> </div> <script>$(window).on("load",function(){$("#loading").hide()});</script> <div class="main-content"> <div class="container"> <div class="row"> <div class="col-md-2 pl-0"> <div class="share sticky-top sticky-top-offset"> <p> Share </p> <ul> <li class="ml-1 mr-1"> <a target="_blank" href="https://twitter.com/intent/tweet?text=3.3x Faster HuggingFace Tokenizers for Single Sequence&url=charlesxu.io/parallel-tokenizer/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"> <i class="fab fa-twitter"></i> </a> </li> <li class="ml-1 mr-1"> <a target="_blank" href="https://facebook.com/sharer.php?u=charlesxu.io/parallel-tokenizer/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;"> <i class="fab fa-facebook-f"></i> </a> </li> <li class="ml-1 mr-1"> <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=charlesxu.io/parallel-tokenizer/" onclick="window.open(this.href, 'width=550,height=435');return false;"> <i class="fab fa-linkedin-in"></i> </a> </li> </ul> <div class="sep"> </div> <ul> <li> <a class="small smoothscroll" href="#disqus_thread"></a> </li> </ul> </div> </div> <div class="col-md-8 flex-first flex-md-unordered"> <div class="mainheading"> <h1 class="posttitle">3.3x Faster HuggingFace Tokenizers for Single Sequence</h1> </div> <img class="featured-image img-fluid lazyimg" style="min-width: 100%" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=" data-src="/assets/images/parallel-tokenizer/cover.png" alt="3.3x Faster HuggingFace Tokenizers for Single Sequence"> <div class="article-post"> <div class="toc mt-4 mb-4 lead"> <h3 style="color: #9c9c9c">Table of Contents</h3> <ul> <li><a href="#the-long-context-revolution-has-a-bottleneck">The Long Context Revolution Has a Bottleneck</a></li> <li><a href="#the-core-insight-overlapping-chunks">The Core Insight: Overlapping Chunks</a></li> <li><a href="#five-key-optimizations">Five Key Optimizations</a> <ul> <li><a href="#optimization-1-recursive-divide-and-conquer-strategy">Optimization 1: Recursive Divide-and-Conquer Strategy</a></li> <li><a href="#optimization-2-cache-block-streaming-for-large-inputs">Optimization 2: Cache-Block Streaming for Large Inputs</a></li> <li><a href="#optimization-3-lazyencoding-zero-copy-offset">Optimization 3: LazyEncoding: Zero-Copy Offset</a></li> <li><a href="#optimization-4-simd-accelerated-smart-boundaries">Optimization 4: SIMD-Accelerated Smart Boundaries</a></li> </ul> </li> <li><a href="#the-benchmark-story">The Benchmark Story</a> <ul> <li><a href="#headline-numbers">Headline Numbers</a></li> </ul> </li> <li><a href="#deliberate-trade-off-word-ids">Deliberate Trade-off: Word IDs</a></li> <li><a href="#how-to-use-it">How to Use It</a> <ul> <li><a href="#rust-api">Rust API</a></li> <li><a href="#python-api">Python API</a></li> <li><a href="#try-it-yourself">Try It Yourself</a></li> </ul> </li> <li><a href="#appendix-a-the-algorithm-split-encode-filter-merge">Appendix A: The Algorithm: Split, Encode, Filter, Merge</a> <ul> <li><a href="#correctness-proof">Correctness Proof</a></li> <li><a href="#why-this-actually-works-in-practice">Why This Actually Works in Practice</a></li> <li><a href="#handling-edge-cases">Handling Edge Cases</a></li> <li><a href="#recursive-application">Recursive Application</a></li> </ul> </li> </ul> </div> <p>I made <a href="https://github.com/huggingface/tokenizers">HuggingFace tokenizers</a> 3.3x faster by parallelizing single-input tokenization with overlapping chunks, zero-copy offset operations, SIMD-accelerated boundary detection, and cache-hierarchy-aware chunking. The result is bit-identical to serial encoding. Fast tokenization is critical to achieve low TTFT given long context.</p> <h2 id="the-long-context-revolution-has-a-bottleneck">The Long Context Revolution Has a Bottleneck</h2> <p>LLM models now routinely handle 1M+ token contexts. This isn’t just a bigger number; it’s enabling fundamentally new use cases:</p> <ul> <li><strong>AI Agents</strong>: Load entire codebases into context instead of fumbling with RAG retrieval. Why search when you can reason over everything?</li> <li><strong>Document Analysis</strong>: Process entire legal contracts, medical records, or research papers in one shot—no chunking, no context loss.</li> <li><strong>Displacing RAG</strong>: Google’s “infinite context” approach suggests a future where retrieval augmentation becomes unnecessary.</li> </ul> <p>But there’s a bottleneck nobody talks about: <strong>tokenization</strong>.</p> <p>Everyone optimizes inference—quantization, KV cache, flash attention, speculative decoding, etc. But it takes 1.1 seconds to tokenize a 4MB document (about 1M tokens).</p> <p>As AI agents scale with tool use and long context with multi-turns, the tokenization latency hurts TTFT (Time to First Token) and time to completion.</p> <p><strong>The challenge</strong>: Tokenization is inherently sequential. You process one token, then find the next, then the next. How to parallelize this without breaking correctness?</p> <h2 id="the-core-insight-overlapping-chunks">The Core Insight: Overlapping Chunks</h2> <p>The breakthrough is simple: <strong>we can chunk, parallelize, and merge</strong>.</p> <p>The naive approach of splitting text and tokenizing in parallel doesn’t work, because you’ll get different results than serial encoding given tokens can span split boundaries. My solution uses overlapping chunks with a deterministic merge algorithm detailed in Appendix A.</p> <h2 id="five-key-optimizations">Five Key Optimizations</h2> <h3 id="optimization-1-recursive-divide-and-conquer-strategy">Optimization 1: Recursive Divide-and-Conquer Strategy</h3> <p>We use binary splitting with <code class="language-plaintext highlighter-rouge">rayon::join</code> for work-stealing parallelism:</p> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="k">fn</span> <span class="nf">encode_recursive</span><span class="p">(</span><span class="n">input</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Encoding</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;=</span> <span class="n">max_depth</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">encode_serial</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>  <span class="c1">// Base case</span>
+    <span class="p">}</span>
+
+    <span class="k">let</span> <span class="n">mid</span> <span class="o">=</span> <span class="nf">find_split_point</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">input</span><span class="nf">.len</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">left_chunk</span><span class="p">,</span> <span class="n">right_chunk</span><span class="p">)</span> <span class="o">=</span> <span class="nf">create_overlapping_chunks</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">mid</span><span class="p">);</span>
+
+    <span class="c1">// Parallel execution via rayon</span>
+    <span class="k">let</span> <span class="p">(</span><span class="n">left_encoding</span><span class="p">,</span> <span class="n">right_encoding</span><span class="p">)</span> <span class="o">=</span> <span class="nn">rayon</span><span class="p">::</span><span class="nf">join</span><span class="p">(</span>
+        <span class="p">||</span> <span class="nf">encode_recursive</span><span class="p">(</span><span class="n">left_chunk</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">),</span>
+        <span class="p">||</span> <span class="nf">encode_recursive</span><span class="p">(</span><span class="n">right_chunk</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">),</span>
+    <span class="p">);</span>
+
+    <span class="nf">merge_at_midpoint</span><span class="p">(</span><span class="n">left_encoding</span><span class="p">,</span> <span class="n">right_encoding</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Auto-tuning depth</strong> based on input size and CPU cores:</p> <ul> <li>100KB input → depth 2 (4 parallel chunks)</li> <li>500KB input → depth 3 (8 parallel chunks)</li> <li>1MB input → depth 4 (16 parallel chunks)</li> </ul> <p><strong>Why binary splitting?</strong> Clean merge semantics and work-stealing efficiency. Rayon automatically balances work across available cores.</p> <p><strong>Results</strong>: 1.7-2.1x speedup for 100KB-500KB inputs.</p> <p><strong>Sweet spot</strong>: Medium-sized documents like research papers, API documentation, or individual source files.</p> <h3 id="optimization-2-cache-block-streaming-for-large-inputs">Optimization 2: Cache-Block Streaming for Large Inputs</h3> <p>At 1MB+, recursive splitting starts causing cache thrashing. Different threads access scattered memory regions, evicting each other’s data from cache.</p> <p><strong>The solution</strong>: Process input in L1-cache-sized blocks sequentially:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>Input (1MB):
+├───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┤
+│ 0 │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │10 │11 │12 │ ...  │
+│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│8KB│      │
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴──────┘
+  ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓   ↓
+  Encode all blocks in parallel, merge sequentially
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Why 8KB blocks?</strong> We benchmarked extensively:</p> <table> <thead> <tr> <th>Block Size</th> <th>Time (4MB)</th> <th>Throughput</th> <th>vs 64KB</th> </tr> </thead> <tbody> <tr> <td><strong>4KB</strong></td> <td><strong>386ms</strong></td> <td><strong>10.4 MiB/s</strong></td> <td><strong>+31% faster</strong> ⭐</td> </tr> <tr> <td><strong>8KB</strong></td> <td><strong>382ms</strong></td> <td><strong>10.5 MiB/s</strong></td> <td><strong>+32% faster</strong> ⭐</td> </tr> <tr> <td>16KB</td> <td>421ms</td> <td>9.5 MiB/s</td> <td>+20% faster</td> </tr> <tr> <td>32KB</td> <td>495ms</td> <td>8.1 MiB/s</td> <td>+2% faster</td> </tr> <tr> <td>64KB</td> <td>505ms</td> <td>7.9 MiB/s</td> <td>baseline</td> </tr> </tbody> </table> <p>Smaller blocks are faster! Why?</p> <ul> <li><strong>L1 cache residency</strong>: 8KB fits entirely in L1 cache (typically 32-64KB) with room for vocabulary lookups</li> <li><strong>Maximum parallelism</strong>: 1MB = 125 independent work items vs. 16 with 64KB blocks</li> <li><strong>Sequential memory access</strong>: Each block is processed sequentially, so the CPU prefetcher thrives</li> <li><strong>Less cache eviction</strong>: Vocabulary data stays hot in cache across small blocks</li> </ul> <p>Cache hierarchy matters:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>8KB blocks:  [L1: block + vocab] → process → next block
+             Full L1 residency, maximum parallelism
+
+64KB blocks: [L2 cache: block] → process → next block
+             L2 latency, fewer parallel blocks, cache thrashing
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Results</strong>: 2.2-3.2x speedup at 100KB-1MB, <strong>3.3x at 4MB</strong>.</p> <p><strong>Auto-selection</strong>: The system automatically picks streaming mode for inputs ≥1MB.</p> <h3 id="optimization-3-lazyencoding-zero-copy-offset">Optimization 3: LazyEncoding: Zero-Copy Offset</h3> <p>Here’s a subtle but critical problem: after tokenizing each chunk, we need to:</p> <ol> <li>Shift all token offsets to global coordinates (O(n))</li> <li>Filter tokens by position (O(n))</li> <li>Merge arrays (O(n))</li> </ol> <p>At depth 4 recursion (16 chunks), this would mean <strong>~30 O(n) passes</strong> through the data. That’s a lot of wasted work.</p> <p><strong>The solution</strong>: Defer everything until final materialization.</p> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="n">LazyEncoding</span> <span class="p">{</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Encoding</span><span class="p">,</span>
+    <span class="n">base_offset</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>  <span class="c1">// Offset to add (applied lazily)</span>
+    <span class="n">start_idx</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>    <span class="c1">// Virtual range start</span>
+    <span class="n">end_idx</span><span class="p">:</span> <span class="nb">usize</span><span class="p">,</span>      <span class="c1">// Virtual range end</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">LazyEncoding</span> <span class="p">{</span>
+    <span class="c1">// O(1) - just update metadata</span>
+    <span class="k">fn</span> <span class="nf">shift_offset</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="py">.base_offset</span> <span class="o">+=</span> <span class="n">delta</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// O(log n) - binary search instead of linear scan</span>
+    <span class="k">fn</span> <span class="nf">filter_starting_before</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="n">cut_idx</span> <span class="o">=</span> <span class="nf">binary_search_offsets</span><span class="p">(</span><span class="n">position</span><span class="p">);</span>
+        <span class="k">self</span><span class="py">.end_idx</span> <span class="o">=</span> <span class="k">self</span><span class="py">.start_idx</span> <span class="o">+</span> <span class="n">cut_idx</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// O(n) - but only called ONCE at the very end</span>
+    <span class="k">fn</span> <span class="nf">materialize</span><span class="p">(</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Encoding</span> <span class="p">{</span>
+        <span class="c1">// Apply base_offset and extract range in one pass</span>
+        <span class="nf">apply_and_extract</span><span class="p">(</span><span class="k">self</span><span class="py">.encoding</span><span class="p">,</span> <span class="k">self</span><span class="py">.base_offset</span><span class="p">,</span>
+                         <span class="k">self</span><span class="py">.start_idx</span><span class="p">,</span> <span class="k">self</span><span class="py">.end_idx</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Impact</strong>: Turns O(n × depth) into O(n) total complexity.</p> <p><strong>Benchmark evidence</strong> (500KB input):</p> <table> <thead> <tr> <th>Depth</th> <th>Without LazyEncoding</th> <th>With LazyEncoding</th> <th>Improvement</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>93ms</td> <td>93ms</td> <td>baseline</td> </tr> <tr> <td>2</td> <td>87ms</td> <td>66ms</td> <td>+32% faster</td> </tr> <tr> <td>3</td> <td>84ms</td> <td>59ms</td> <td>+42% faster</td> </tr> <tr> <td>4</td> <td>82ms</td> <td>58ms</td> <td><strong>+60% faster</strong></td> </tr> </tbody> </table> <p>At depth 4, LazyEncoding is <strong>60% faster</strong> than naive offset manipulation.</p> <h3 id="optimization-4-simd-accelerated-smart-boundaries">Optimization 4: SIMD-Accelerated Smart Boundaries</h3> <p>We need to split text at “safe” positions where tokenization is predictable. Naive approach: scan byte-by-byte for whitespace. Slow.</p> <p><strong>Better solution</strong>: Use the <code class="language-plaintext highlighter-rouge">memchr</code> crate for SIMD-accelerated searches (AVX2/SSE2):</p> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">memchr</span><span class="p">::</span><span class="n">memchr_iter</span><span class="p">;</span>
+
+<span class="c1">// 10-20x faster than byte-by-byte scanning</span>
+<span class="k">for</span> <span class="n">pos</span> <span class="k">in</span> <span class="nf">memchr_iter</span><span class="p">(</span><span class="sc">b'\n'</span><span class="p">,</span> <span class="n">text_bytes</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nf">is_paragraph_break</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SplitPoint</span> <span class="p">{</span> <span class="n">position</span><span class="p">:</span> <span class="n">pos</span><span class="p">,</span> <span class="n">is_safe</span><span class="p">:</span> <span class="k">true</span> <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Smart boundary detection</strong> (priority order):</p> <table> <thead> <tr> <th>Priority</th> <th>Boundary Type</th> <th>Pattern</th> <th>Safety Level</th> <th>Overlap Size</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>Paragraph breaks</td> <td><code class="language-plaintext highlighter-rouge">\n\n</code></td> <td>Guaranteed token boundary</td> <td>100-500 bytes</td> </tr> <tr> <td>2</td> <td>Sentence endings</td> <td><code class="language-plaintext highlighter-rouge">. </code>, <code class="language-plaintext highlighter-rouge">! </code>, <code class="language-plaintext highlighter-rouge">? </code></td> <td>Safe boundary</td> <td>100-500 bytes</td> </tr> <tr> <td>3</td> <td>Any whitespace</td> <td><code class="language-plaintext highlighter-rouge">\n</code>, <code class="language-plaintext highlighter-rouge">\t</code></td> <td>Fallback</td> <td>500-5000 bytes</td> </tr> </tbody> </table> <p><strong>Why “safe” boundaries matter</strong>:</p> <p>At a paragraph break or sentence ending, we know tokenization will be consistent. The overlap only needs to handle the longest possible token (~100 bytes for most vocabularies).</p> <p>At an arbitrary whitespace, we need more overlap to handle context-dependent tokenization (e.g., “ the” vs “the”).</p> <p><strong>Impact</strong>:</p> <ul> <li><strong>SIMD search</strong>: 10-20x faster than byte-by-byte</li> <li><strong>Smart overlap</strong>: 80-90% reduction in redundant tokenization <ul> <li>Regular boundaries: ~5-15% redundant work</li> <li>Safe boundaries: ~1-2% redundant work</li> </ul> </li> </ul> <p><strong>Example</strong> (depth 4, 16 chunks):</p> <ul> <li>Regular overlap: 16 chunks × 5KB overlap = 80KB redundant tokenization</li> <li>Safe boundaries: 16 chunks × 500 bytes = 8KB redundant tokenization</li> <li><strong>10x less wasted work</strong></li> </ul> <h2 id="the-benchmark-story">The Benchmark Story</h2> <h3 id="headline-numbers">Headline Numbers</h3> <table> <thead> <tr> <th>Input Size</th> <th>Serial</th> <th>Best Parallel</th> <th>Speedup</th> </tr> </thead> <tbody> <tr> <td>100KB</td> <td>23ms</td> <td><strong>11ms</strong></td> <td><strong>2.2x</strong></td> </tr> <tr> <td>500KB</td> <td>122ms</td> <td><strong>39ms</strong></td> <td><strong>3.1x</strong></td> </tr> <tr> <td>1MB</td> <td>264ms</td> <td><strong>87ms</strong></td> <td><strong>3.0x</strong></td> </tr> <tr> <td>4MB</td> <td>1.10s</td> <td><strong>335ms</strong></td> <td><strong>3.3x</strong></td> </tr> </tbody> </table> <p><strong>Test environment</strong>: M-series Mac, release build with criterion benchmarks, BERT tokenizer.</p> <h2 id="deliberate-trade-off-word-ids">Deliberate Trade-off: Word IDs</h2> <p>We intentionally <strong>do not compute word IDs</strong> in parallel mode. Here’s why:</p> <ul> <li><strong>Word IDs are rarely needed</strong>: Most use cases (LLM inference, embeddings) don’t need them</li> <li><strong>Computing them would reduce speedup</strong>: Would require additional O(n) work or complex heuristics</li> <li><strong>Clear fallback</strong>: If you need word IDs, use serial encoding: <code class="language-plaintext highlighter-rouge">tokenizer.encode()</code></li> </ul> <p><strong>Result</strong>: 99% of users get 3x speedup. The 1% who need word IDs can use serial mode.</p> <h2 id="how-to-use-it">How to Use It</h2> <h3 id="rust-api">Rust API</h3> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">tokenizers</span><span class="p">::</span><span class="n">Tokenizer</span><span class="p">;</span>
+
+<span class="c1">// Load your tokenizer</span>
+<span class="k">let</span> <span class="n">tokenizer</span> <span class="o">=</span> <span class="nn">Tokenizer</span><span class="p">::</span><span class="nf">from_file</span><span class="p">(</span><span class="s">"tokenizer.json"</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+
+<span class="c1">// Option 1: Auto mode (recommended) - picks best strategy</span>
+<span class="k">let</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="nf">.encode_parallel_single</span><span class="p">(</span><span class="o">&amp;</span><span class="n">text</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+
+<span class="c1">// Option 2: Force streaming for huge inputs</span>
+<span class="k">let</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="nf">.encode_streaming</span><span class="p">(</span><span class="o">&amp;</span><span class="n">text</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+
+<span class="c1">// Option 3: Custom configuration</span>
+<span class="k">use</span> <span class="nn">tokenizers</span><span class="p">::</span><span class="nn">tokenizer</span><span class="p">::</span><span class="nn">parallel_encode</span><span class="p">::{</span><span class="n">ParallelConfig</span><span class="p">,</span> <span class="n">ParallelMode</span><span class="p">};</span>
+
+<span class="k">let</span> <span class="n">config</span> <span class="o">=</span> <span class="nn">ParallelConfig</span><span class="p">::</span><span class="nf">streaming</span><span class="p">()</span>
+    <span class="nf">.with_block_size</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>  <span class="c1">// 8KB blocks (optimal)</span>
+    <span class="nf">.with_threshold</span><span class="p">(</span><span class="mi">50_000</span><span class="p">);</span>     <span class="c1">// Minimum size for parallelism</span>
+
+<span class="k">let</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="nf">.encode_parallel_with_config</span><span class="p">(</span><span class="o">&amp;</span><span class="n">text</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <h3 id="python-api">Python API</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+
+<span class="c1"># Load your tokenizer
+</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">.</span><span class="nf">from_file</span><span class="p">(</span><span class="sh">"</span><span class="s">tokenizer.json</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Option 1: Auto mode - just works
+</span><span class="n">long_text</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">large_document.txt</span><span class="sh">"</span><span class="p">).</span><span class="nf">read</span><span class="p">()</span>
+<span class="n">encoding</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">encode_parallel</span><span class="p">(</span><span class="n">long_text</span><span class="p">)</span>
+
+<span class="c1"># Option 2: Streaming mode for multi-MB inputs
+</span><span class="n">huge_text</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">massive_document.txt</span><span class="sh">"</span><span class="p">).</span><span class="nf">read</span><span class="p">()</span>  <span class="c1"># 5MB+
+</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">encode_streaming</span><span class="p">(</span><span class="n">huge_text</span><span class="p">)</span>
+
+<span class="c1"># Access results (same as regular encode)
+</span><span class="nf">print</span><span class="p">(</span><span class="n">encoding</span><span class="p">.</span><span class="n">ids</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">encoding</span><span class="p">.</span><span class="n">tokens</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">encoding</span><span class="p">.</span><span class="n">offsets</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <h3 id="try-it-yourself">Try It Yourself</h3> <p>The code lives on the <code class="language-plaintext highlighter-rouge">parallel</code> branch on <a href="https://github.com/cxuu/tokenizers/tree/parallel">github.com/cxuu/tokenizers</a>.</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="c"># Clone the repository</span>
+git clone https://github.com/cxuu/tokenizers.git
+<span class="nb">cd </span>tokenizers
+git checkout parallel
+
+<span class="c"># Run the benchmarks</span>
+cargo bench <span class="nt">--bench</span> parallel_single_benchmark
+
+<span class="c"># Run the tests</span>
+cargo <span class="nb">test </span>parallel
+
+<span class="c"># Try the Python bindings</span>
+<span class="nb">cd </span>bindings/python
+pip <span class="nb">install </span>maturin
+maturin develop <span class="nt">--release</span>
+python <span class="nt">-c</span> <span class="s2">"
+from tokenizers import Tokenizer
+tokenizer = Tokenizer.from_pretrained('bert-base-uncased')
+text = 'Hello world! ' * 10000
+encoding = tokenizer.encode_parallel(text)
+print(f'Encoded {len(encoding.ids)} tokens')
+"</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Feedback welcome</strong>: This is ready for community testing. Try it on your workloads and let me know how it performs! <br/> <br/> <br/></p> <hr/> <h2 id="appendix-a-the-algorithm-split-encode-filter-merge">Appendix A: The Algorithm: Split, Encode, Filter, Merge</h2> <p>Let’s walk through a concrete example:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>Original Input (100 bytes):
+"The quick brown fox jumps over the lazy dog. The dog was very lazy indeed."
+├─────────────────────────────────────────────────────────────────────────┤
+0                                  50                                    100
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Step 1: Split with Overlap</strong></p> <p>We split at position 50, but encode overlapping regions:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>Left chunk (bytes 0-60):  "The quick brown fox jumps over the lazy dog. The dog wa"
+Right chunk (bytes 40-100): "lazy dog. The dog was very lazy indeed."
+                             └─────┘ 20-byte overlap (bytes 40-60)
+
+Why overlap? The midpoint might fall in the middle of a token!
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Step 2: Encode Both Chunks in Parallel</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>Left encoding:
+┌─────┬───────┬───────┬─────┬───────┬──────┬─────┬──────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│ The │ quick │ brown │ fox │ jumps │ over │ the │ lazy │ dog │  .  │ The │ dog │ was │  wa │
+└─────┴───────┴───────┴─────┴───────┴──────┴─────┴──────┴─────┴─────┴─────┴─────┴─────┴─────┘
+  0      4      10     16    20      26     31    35     40    44    46    50    54    58
+
+Right encoding (offsets relative to byte 40):
+┌──────┬─────┬─────┬─────┬─────┬─────┬──────┬──────┬───────┬─────┐
+│ lazy │ dog │  .  │ The │ dog │ was │ very │ lazy │ indeed│  .  │
+└──────┴─────┴─────┴─────┴─────┴─────┴──────┴──────┴───────┴─────┘
+  0      5     9    11    15    19    23    28     33     39
+  (relative offsets - will shift to global)
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Step 3: Shift Right Encoding to Global Coordinates</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>Right encoding after shifting by 40:
+┌──────┬─────┬─────┬─────┬─────┬─────┬──────┬──────┬───────┬─────┐
+│ lazy │ dog │  .  │ The │ dog │ was │ very │ lazy │ indeed│  .  │
+└──────┴─────┴─────┴─────┴─────┴─────┴──────┴──────┴───────┴─────┘
+  40     45    49    51    55    59    63    68     73     79
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Step 4: Filter at Midpoint</strong></p> <p>Here’s the key insight: <strong>we keep tokens that “belong” to each side based on where they start</strong>.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre>Filtering rule:
+- From LEFT:  Keep tokens where start_offset &lt; midpoint (50)
+- From RIGHT: Keep tokens where start_offset &gt;= midpoint (50)
+
+Left after filtering (keep start &lt; 50):
+┌─────┬───────┬───────┬─────┬───────┬──────┬─────┬──────┬─────┬─────┬─────┐
+│ The │ quick │ brown │ fox │ jumps │ over │ the │ lazy │ dog │  .  │ The │
+└─────┴───────┴───────┴─────┴───────┴──────┴─────┴──────┴─────┴─────┴─────┘
+  0      4      10     16    20      26     31    35     40    44    46
+                                                                       ✓ All &lt; 50
+
+Right after filtering (keep start &gt;= 50):
+┌─────┬─────┬──────┬──────┬───────┬─────┐
+│ dog │ was │ very │ lazy │ indeed│  .  │
+└─────┴─────┴──────┴──────┴───────┴─────┘
+  55    59    63     68     73     79
+  ✓ All &gt;= 50
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Step 5: Concatenate</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>Final result:
+┌─────┬───────┬───────┬─────┬───────┬──────┬─────┬──────┬─────┬─────┬─────┬─────┬─────┬──────┬──────┬───────┬─────┐
+│ The │ quick │ brown │ fox │ jumps │ over │ the │ lazy │ dog │  .  │ The │ dog │ was │ very │ lazy │ indeed│  .  │
+└─────┴───────┴───────┴─────┴───────┴──────┴─────┴──────┴─────┴─────┴─────┴─────┴─────┴──────┴──────┴───────┴─────┘
+  0      4      10     16    20      26     31    35     40    44    46    50    54    59     64     69     75
+
+This is IDENTICAL to what serial encoding would produce!
+</pre></td></tr></tbody></table></code></pre></div></div> <h3 id="correctness-proof">Correctness Proof</h3> <p><strong>Theorem</strong>: The parallel encoding with overlapping chunks produces identical results to serial encoding.</p> <p><strong>Proof</strong>:</p> <p>Let’s define our problem formally:</p> <ul> <li>Input string <code class="language-plaintext highlighter-rouge">S</code> of length <code class="language-plaintext highlighter-rouge">n</code></li> <li>Serial tokenization function <code class="language-plaintext highlighter-rouge">T(s)</code> that produces a sequence of tokens with start/end offsets</li> <li>Midpoint position <code class="language-plaintext highlighter-rouge">m</code> where we split</li> <li>Overlap size <code class="language-plaintext highlighter-rouge">ω</code> (omega)</li> </ul> <p><strong>Claim 1</strong>: For any input substring, tokenization is deterministic.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>∀ substring s: T(s) always produces the same token sequence
+</pre></td></tr></tbody></table></code></pre></div></div> <p>This is true by definition—tokenizers are deterministic state machines.</p> <p><strong>Claim 2</strong>: The overlap is sufficient.</p> <p>We choose overlap <code class="language-plaintext highlighter-rouge">ω ≥ max_token_length</code> to ensure:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>For split at position m:
+- Left chunk:  S[0 : m + ω]
+- Right chunk: S[m - ω : n]
+- Overlap region: S[m - ω : m + ω]
+</pre></td></tr></tbody></table></code></pre></div></div> <p>Any token that spans position <code class="language-plaintext highlighter-rouge">m</code> must:</p> <ul> <li>Start at some position <code class="language-plaintext highlighter-rouge">s</code> where <code class="language-plaintext highlighter-rouge">m - max_token_length &lt; s &lt; m + max_token_length</code></li> <li>End at some position <code class="language-plaintext highlighter-rouge">e</code> where <code class="language-plaintext highlighter-rouge">m - max_token_length &lt; e &lt; m + max_token_length</code></li> </ul> <p>Since <code class="language-plaintext highlighter-rouge">ω ≥ max_token_length</code>, both boundaries are captured by our overlap.</p> <p><strong>Claim 3</strong>: The filtering rule is correct.</p> <p>Define:</p> <ul> <li><code class="language-plaintext highlighter-rouge">L = T(S[0 : m + ω])</code> - tokens from left chunk</li> <li><code class="language-plaintext highlighter-rouge">R = T(S[m - ω : n])</code> - tokens from right chunk (shifted by <code class="language-plaintext highlighter-rouge">m - ω</code>)</li> <li><code class="language-plaintext highlighter-rouge">L_filtered</code> = tokens from <code class="language-plaintext highlighter-rouge">L</code> where <code class="language-plaintext highlighter-rouge">start_offset &lt; m</code></li> <li><code class="language-plaintext highlighter-rouge">R_filtered</code> = tokens from <code class="language-plaintext highlighter-rouge">R</code> where <code class="language-plaintext highlighter-rouge">start_offset ≥ m</code></li> </ul> <p>We need to prove: <code class="language-plaintext highlighter-rouge">L_filtered ⊕ R_filtered = T(S)</code> (where ⊕ is concatenation)</p> <p><strong>Proof by construction</strong>:</p> <p>Consider any token <code class="language-plaintext highlighter-rouge">t</code> in the serial encoding <code class="language-plaintext highlighter-rouge">T(S)</code> with start offset <code class="language-plaintext highlighter-rouge">s</code>:</p> <p><strong>Case 1</strong>: <code class="language-plaintext highlighter-rouge">s &lt; m</code> (token starts before midpoint)</p> <p>The token is completely determined by <code class="language-plaintext highlighter-rouge">S[s : s + len(t)]</code>. Since the left chunk includes <code class="language-plaintext highlighter-rouge">S[0 : m + ω]</code> and <code class="language-plaintext highlighter-rouge">s &lt; m</code>, we have <code class="language-plaintext highlighter-rouge">s + len(t) &lt; m + max_token_length ≤ m + ω</code>. Therefore, <code class="language-plaintext highlighter-rouge">S[s : s + len(t)] ⊂ S[0 : m + ω]</code>, so the token appears in <code class="language-plaintext highlighter-rouge">L</code>. Since <code class="language-plaintext highlighter-rouge">s &lt; m</code>, it passes the filter and appears in <code class="language-plaintext highlighter-rouge">L_filtered</code>. ✓</p> <p><strong>Case 2</strong>: <code class="language-plaintext highlighter-rouge">s ≥ m</code> (token starts at or after midpoint)</p> <p>The token is completely determined by <code class="language-plaintext highlighter-rouge">S[s : s + len(t)]</code>. Since the right chunk includes <code class="language-plaintext highlighter-rouge">S[m - ω : n]</code> and <code class="language-plaintext highlighter-rouge">s ≥ m</code>, we have <code class="language-plaintext highlighter-rouge">s ≥ m &gt; m - ω</code>. Therefore, <code class="language-plaintext highlighter-rouge">S[s : s + len(t)] ⊂ S[m - ω : n]</code>, so the token appears in <code class="language-plaintext highlighter-rouge">R</code> (after shifting by <code class="language-plaintext highlighter-rouge">m - ω</code>). Since <code class="language-plaintext highlighter-rouge">s ≥ m</code> (after shifting to global coordinates), it passes the filter and appears in <code class="language-plaintext highlighter-rouge">R_filtered</code>. ✓</p> <p><strong>Case 3</strong>: No token appears in both filters</p> <p>Suppose a token <code class="language-plaintext highlighter-rouge">t</code> appears in both <code class="language-plaintext highlighter-rouge">L_filtered</code> and <code class="language-plaintext highlighter-rouge">R_filtered</code>. Then:</p> <ul> <li>From <code class="language-plaintext highlighter-rouge">L_filtered</code>: <code class="language-plaintext highlighter-rouge">start(t) &lt; m</code></li> <li>From <code class="language-plaintext highlighter-rouge">R_filtered</code>: <code class="language-plaintext highlighter-rouge">start(t) ≥ m</code></li> </ul> <p>This is a contradiction. Therefore, no duplicate tokens. ✓</p> <p><strong>Conclusion</strong>: Every token from <code class="language-plaintext highlighter-rouge">T(S)</code> appears exactly once in <code class="language-plaintext highlighter-rouge">L_filtered ⊕ R_filtered</code>, in the correct order with correct offsets. QED.</p> <h3 id="why-this-actually-works-in-practice">Why This Actually Works in Practice</h3> <p>The theoretical proof is nice, but here’s the practical insight:</p> <p><strong>Tokenization has no long-range dependencies</strong>. A BPE tokenizer processes text with a sliding window of at most <code class="language-plaintext highlighter-rouge">max_token_length</code> bytes. By overlapping more than this maximum, we ensure that:</p> <ol> <li><strong>Every token appears in at least one chunk</strong>: No token is “cut off” by the split</li> <li><strong>Boundary tokens appear in both chunks</strong>: The overlap captures them</li> <li><strong>Filtering is deterministic</strong>: We keep each token exactly once based on where it starts</li> <li><strong>Order is preserved</strong>: Left tokens come before right tokens by construction</li> </ol> <p><strong>Concrete example</strong> of a boundary token:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre>Input: "...lazy dog. The dog..."
+              ↑ Split here (position 50)
+
+Left chunk:  "...lazy dog. The" → produces tokens [..., "lazy", " dog", ".", " The"]
+Right chunk: " dog. The dog..." → produces tokens [" dog", ".", " The", " dog", ...]
+
+Token " dog" (starting at position 45) appears in BOTH encodings.
+
+Filtering:
+- In left encoding:  start=45 &lt; 50 → KEEP ✓
+- In right encoding: start=45 &lt; 50 → DISCARD ✗
+
+Result: Token appears exactly once in final output.
+</pre></td></tr></tbody></table></code></pre></div></div> <h3 id="handling-edge-cases">Handling Edge Cases</h3> <p><strong>Q: What if the split falls in the middle of a multi-byte UTF-8 character?</strong></p> <p><strong>A</strong>: We adjust to the nearest character boundary before creating chunks. The <code class="language-plaintext highlighter-rouge">find_split_point()</code> function ensures splits only happen at valid UTF-8 boundaries.</p> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">fn</span> <span class="nf">find_char_boundary_forward</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">usize</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="nf">.min</span><span class="p">(</span><span class="n">s</span><span class="nf">.len</span><span class="p">());</span>
+    <span class="k">while</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="n">s</span><span class="nf">.len</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">s</span><span class="nf">.is_char_boundary</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">pos</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p><strong>Q: What about tokenizers with special token handling?</strong></p> <p><strong>A</strong>: Special tokens ([CLS], [SEP], etc.) are added via post-processing AFTER parallel encoding. The core encoding produces tokens without special tokens, then the <code class="language-plaintext highlighter-rouge">post_process()</code> function adds them identically to serial mode.</p> <p><strong>Q: How do we ensure overlap is large enough?</strong></p> <p><strong>A</strong>: We query the vocabulary for the longest token:</p> <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">fn</span> <span class="nf">max_token_byte_length</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">usize</span> <span class="p">{</span>
+    <span class="k">self</span><span class="nf">.get_vocab</span><span class="p">()</span>
+        <span class="nf">.keys</span><span class="p">()</span>
+        <span class="nf">.map</span><span class="p">(|</span><span class="n">s</span><span class="p">|</span> <span class="n">s</span><span class="nf">.len</span><span class="p">())</span>
+        <span class="nf">.max</span><span class="p">()</span>
+        <span class="nf">.unwrap_or</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div> <p>For BERT: ~25 bytes For GPT-2: ~50 bytes For byte-level BPE: ~100 bytes</p> <p>We use <code class="language-plaintext highlighter-rouge">overlap = max_token_length × 3 + safety_margin</code> to be conservative. At safe boundaries (sentence/paragraph ends), we reduce to <code class="language-plaintext highlighter-rouge">max_token_length + safety_margin</code> because tokenization is guaranteed to be consistent.</p> <h3 id="recursive-application">Recursive Application</h3> <p>The same merge logic applies recursively:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre>Depth 0: Full input (1MB)
+         │
+         ├─ Split at 500KB
+         │
+Depth 1: ├─ Left (0-500KB)          ├─ Right (500KB-1MB)
+         │  │                        │  │
+         │  ├─ Split at 250KB        │  ├─ Split at 750KB
+         │  │                        │  │
+Depth 2: │  ├─L1 (0-250KB)   ├─R1   │  ├─L2          ├─R2
+         │     │              │      │     │           │
+         │     encode()     encode() │   encode()   encode()
+         │     ↓              ↓      │     ↓           ↓
+         │     filter + merge        │     filter + merge
+         │            ↓              │            ↓
+         │         merged_L          │         merged_R
+         │            ↓              │            ↓
+         └────────────┴──────────────┴────────────┘
+                      filter + merge
+                            ↓
+                    Final encoding ✓
+</pre></td></tr></tbody></table></code></pre></div></div> <p>Each merge applies the same filter-and-concatenate logic. The correctness proof composes: if each level produces correct results, the final result is correct.</p> <p><strong>The challenge</strong>: Making this practical requires five key optimizations that reduce overhead and maximize cache efficiency.</p> </div> <p> <small> <span class="post-date"><time class="post-date" datetime="2025-11-25">25 Nov 2025</time></span> </small> </p> <div class="after-post-cats"> <ul class="tags mb-4"> <li> <a class="smoothscroll" href="/categories#artificial-intelligence">artificial intelligence</a> </li> <li> <a class="smoothscroll" href="/categories#llm">llm</a> </li> </ul> </div> <div class="after-post-tags"> <ul class="tags"> </ul> </div> <div class="row PageNavigation d-flex justify-content-between font-weight-bold"> <a class="prev d-block col-md-6" href="/speculative-decoding/"> &laquo; Accelerate LLM Inference with Speculative Decoding</a> <div class="clearfix"></div> </div> </div> </div> </div> </div> <div class="alertbar"> <div class="container text-center"> <span><img src="/assets/images/logo.png" alt="Charles Xu" height="32" width="32"> &nbsp; Never miss a <b>story</b> from me, subscribe to my newsletter</span> <form action="https://gmail.us5.list-manage.com/subscribe/post?u=b3d456844a3860642cd584c1b&amp;id=3f0c5c8bcd" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate> <div class="mc-field-group"> <input type="email" placeholder="Email" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required> <input type="submit" value="Subscribe" name="subscribe" class="heart"> </div> </form> </div> </div> </div> <div class="jumbotron fortags"> <div class="d-md-flex h-100"> <div class="col-md-4 transpdark align-self-center text-center h-100"> <div class="d-md-flex align-items-center justify-content-center h-100"> <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2> </div> </div> <div class="col-md-8 p-5 align-self-center text-center"> <a class="mt-1 mb-1" href="/categories#git">git (3)</a> <a class="mt-1 mb-1" href="/categories#web">web (9)</a> <a class="mt-1 mb-1" href="/categories#microservices">microservices (8)</a> <a class="mt-1 mb-1" href="/categories#distributed-systems">distributed systems (6)</a> <a class="mt-1 mb-1" href="/categories#signal-processing">signal processing (1)</a> <a class="mt-1 mb-1" href="/categories#networking">networking (11)</a> <a class="mt-1 mb-1" href="/categories#istio">istio (4)</a> <a class="mt-1 mb-1" href="/categories#security">security (1)</a> <a class="mt-1 mb-1" href="/categories#docker">docker (2)</a> <a class="mt-1 mb-1" href="/categories#kubernetes">kubernetes (9)</a> <a class="mt-1 mb-1" href="/categories#operation">operation (4)</a> <a class="mt-1 mb-1" href="/categories#career">career (5)</a> <a class="mt-1 mb-1" href="/categories#go">go (1)</a> <a class="mt-1 mb-1" href="/categories#cloud">cloud (4)</a> <a class="mt-1 mb-1" href="/categories#investment">investment (2)</a> <a class="mt-1 mb-1" href="/categories#startup">startup (6)</a> <a class="mt-1 mb-1" href="/categories#oss">oss (1)</a> <a class="mt-1 mb-1" href="/categories#artificial-intelligence">artificial intelligence (3)</a> <a class="mt-1 mb-1" href="/categories#llm">llm (3)</a> </div> </div> </div> <footer class="footer"> <div class="container"> <div class="row"> <div class="col-md-6 col-sm-6 text-center text-lg-left" style="margin-bottom: 10px;"> Copyright © 2016-2025 Charles Xu </div> </div> </div> </footer> </div> <script src="/assets/js/popper.min.js"></script> <script src="/assets/js/bootstrap.min.js"></script> <script src="/assets/js/mediumish.js"></script> <script src="/assets/js/lazyload.js"></script> <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> <link href="/assets/css/screen.css" rel="stylesheet"> <link href="/assets/css/main.css" rel="stylesheet"> </body> </html>
