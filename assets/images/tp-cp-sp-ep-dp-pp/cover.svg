@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="929" height="489" viewBox="0 0 929 489" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah2563eb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0.6 L10,5 L0,9.4 L2.8,5 z" fill="#2563eb"/></marker><marker id="ah15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0.6 L10,5 L0,9.4 L2.8,5 z" fill="#15803d"/></marker><marker id="ahc2410c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0.6 L10,5 L0,9.4 L2.8,5 z" fill="#c2410c"/></marker><marker id="ahbe123c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0.6 L10,5 L0,9.4 L2.8,5 z" fill="#be123c"/></marker><marker id="ah374151" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0.6 L10,5 L0,9.4 L2.8,5 z" fill="#374151"/></marker></defs>
+<rect width="929" height="489" fill="#ffffff"/>
+<text x="32" y="52.01" font-size="28" fill="#111827" text-anchor="start" font-weight="bold">Where one prompt token goes during MoE prefill</text>
+<text x="32" y="79.00" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">32 GPUs · attention TP2 × CP2 × DP4 × PP2 · experts EP16 × PP2 · layer 1 shown, then the stage hop</text>
+<g transform="translate(14,70.5)"><path d="M35,46.0 L30,46.0 L30,156.0 L35,156.0" fill="none" stroke="#9ca3af" stroke-width="1"/>
+<text x="18" y="105.29" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal" transform="rotate(-90 18 101.0)">stage 0 · L1–4</text>
+<path d="M35,228.0 L30,228.0 L30,338.0 L35,338.0" fill="none" stroke="#9ca3af" stroke-width="1"/>
+<text x="18" y="287.29" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal" transform="rotate(-90 18 283.0)">stage 1 · L5–8</text>
+<line x1="40" y1="192.0" x2="553" y2="192.0" stroke="#d1d5db" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="92.0" y="40.0" width="461.0" height="48.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="68.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 0</text>
+<rect x="92.0" y="114.0" width="461.0" height="48.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="142.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 1</text>
+<rect x="92.0" y="222.0" width="461.0" height="48.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="250.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 2</text>
+<rect x="92.0" y="296.0" width="461.0" height="48.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="324.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 3</text>
+<rect x="100.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="123.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">0</text>
+<rect x="157.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="180.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">1</text>
+<rect x="214.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#c2410c" stroke="#c2410c" stroke-width="1.2"/>
+<text x="237.0" y="68.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">2</text>
+<rect x="271.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#fdba74" stroke="#c2410c" stroke-width="1.2"/>
+<text x="294.0" y="68.81" font-size="13" fill="#7c2d12" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">3</text>
+<rect x="328.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="351.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">4</text>
+<rect x="385.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="408.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">5</text>
+<rect x="442.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="465.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">6</text>
+<rect x="499.0" y="46.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="522.0" y="68.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">7</text>
+<rect x="100.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#15803d" stroke="#15803d" stroke-width="1.2"/>
+<text x="123.0" y="142.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">8</text>
+<rect x="157.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#15803d" stroke="#15803d" stroke-width="1.2"/>
+<text x="180.0" y="142.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">9</text>
+<rect x="210.5" y="116.5" width="53.0" height="43.0" rx="8" fill="none" stroke="#0f766e" stroke-width="2.2"/>
+<rect x="214.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#2563eb" stroke="#2563eb" stroke-width="1.2"/>
+<text x="237.0" y="142.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">10</text>
+<rect x="267.5" y="116.5" width="53.0" height="43.0" rx="8" fill="none" stroke="#0f766e" stroke-width="2.2"/>
+<rect x="271.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#111827" stroke="#111827" stroke-width="1.2"/>
+<text x="294.0" y="142.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">11</text>
+<rect x="328.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="351.0" y="142.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">12</text>
+<rect x="385.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#c2410c" stroke="#c2410c" stroke-width="1.2"/>
+<text x="408.0" y="142.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">13</text>
+<rect x="442.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="465.0" y="142.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">14</text>
+<rect x="499.0" y="120.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="522.0" y="142.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">15</text>
+<rect x="100.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="123.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">16</text>
+<rect x="157.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="180.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">17</text>
+<rect x="214.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="237.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">18</text>
+<rect x="271.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="294.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">19</text>
+<rect x="328.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="351.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">20</text>
+<rect x="385.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="408.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">21</text>
+<rect x="442.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="465.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">22</text>
+<rect x="499.0" y="228.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="522.0" y="250.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">23</text>
+<rect x="100.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="123.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">24</text>
+<rect x="157.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="180.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">25</text>
+<rect x="210.5" y="298.5" width="53.0" height="43.0" rx="8" fill="none" stroke="#0f766e" stroke-width="2.2"/>
+<rect x="214.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="237.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">26</text>
+<rect x="267.5" y="298.5" width="53.0" height="43.0" rx="8" fill="none" stroke="#0f766e" stroke-width="2.2"/>
+<rect x="271.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#be123c" stroke="#be123c" stroke-width="1.2"/>
+<text x="294.0" y="324.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">27</text>
+<rect x="328.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="351.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">28</text>
+<rect x="385.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="408.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">29</text>
+<rect x="442.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="465.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">30</text>
+<rect x="499.0" y="302.0" width="46.0" height="36.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="522.0" y="324.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">31</text>
+<path d="M286.0,156.0 C286.0,170.0 245.0,172.0 245.0,158.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M286.0,156.0 C286.0,170.0 245.0,172.0 245.0,158.0" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah2563eb)"/>
+<path d="M282.0,120.0 C282.0,96.0 192.0,94.0 192.0,118.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M282.0,120.0 C282.0,96.0 192.0,94.0 192.0,118.0" fill="none" stroke="#15803d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah15803d)"/>
+<path d="M225.0,156.0 C225.0,168.0 135.0,170.0 135.0,158.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M225.0,156.0 C225.0,168.0 135.0,170.0 135.0,158.0" fill="none" stroke="#15803d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah15803d)"/>
+<path d="M300.0,120.0 L300.0,84.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M300.0,120.0 L300.0,84.0" fill="none" stroke="#c2410c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3.5" marker-end="url(#ahc2410c)"/>
+<path d="M284.0,46.0 C284.0,30.0 247.0,28.0 247.0,44.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M284.0,46.0 C284.0,30.0 247.0,28.0 247.0,44.0" fill="none" stroke="#c2410c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ahc2410c)"/>
+<path d="M314.0,120.0 C314.0,104.0 388.0,102.0 388.0,118.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M314.0,120.0 C314.0,104.0 388.0,102.0 388.0,118.0" fill="none" stroke="#c2410c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ahc2410c)"/>
+<path d="M310.0,156.0 C310.0,178.0 322.5,198.0 322.5,220.0 L322.5,272.0 C322.5,282.0 310.0,288.0 310.0,300.0" fill="none" stroke="#ffffff" stroke-width="5.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M310.0,156.0 C310.0,178.0 322.5,198.0 322.5,220.0 L322.5,272.0 C322.5,282.0 310.0,288.0 310.0,300.0" fill="none" stroke="#be123c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3.5" marker-end="url(#ahbe123c)"/>
+<circle cx="317.0" cy="138.0" r="10" fill="#7c3aed" stroke="#ffffff" stroke-width="2"/><text x="317" y="142.03" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+<circle cx="265.5" cy="167.0" r="10" fill="#2563eb" stroke="#ffffff" stroke-width="2"/><text x="265.5" y="171.03" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">2</text>
+<circle cx="237.0" cy="102.0" r="10" fill="#15803d" stroke="#ffffff" stroke-width="2"/><text x="237.0" y="106.03" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">3</text>
+<circle cx="351.0" cy="108.0" r="10" fill="#c2410c" stroke="#ffffff" stroke-width="2"/><text x="351.0" y="112.03" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">4</text>
+<circle cx="322.5" cy="246.0" r="10" fill="#be123c" stroke="#ffffff" stroke-width="2"/><text x="322.5" y="250.03" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">5</text>
+<circle cx="265.5" cy="353.0" r="10" fill="#0f766e" stroke="#ffffff" stroke-width="2"/><text x="265.5" y="357.02" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="bold">6</text></g>
+<circle cx="607.0" cy="112.5" r="12" fill="#7c3aed" stroke="#ffffff" stroke-width="2"/><text x="607" y="117.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+<text x="631" y="107.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">Land on GPU 11</text>
+<text x="631" y="128.50" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">DP replica 2 · CP chunk c2 · SP slice T/4</text>
+<circle cx="607.0" cy="172.5" r="12" fill="#2563eb" stroke="#ffffff" stroke-width="2"/><text x="607" y="177.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">2</text>
+<text x="631" y="167.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">All-gather with GPU 10</text>
+<text x="631" y="188.50" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">TP: each GPU computes half the heads</text>
+<circle cx="607.0" cy="232.5" r="12" fill="#15803d" stroke="#ffffff" stroke-width="2"/><text x="607" y="237.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">3</text>
+<text x="631" y="227.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">Swap K/V with GPU 9</text>
+<text x="631" y="248.50" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">CP ring attention (GPU 10 ↔ 8 likewise)</text>
+<circle cx="607.0" cy="292.5" r="12" fill="#c2410c" stroke="#ffffff" stroke-width="2"/><text x="607" y="297.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">4</text>
+<text x="631" y="287.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">Dispatch to two experts</text>
+<text x="631" y="308.50" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">GPU 13 (NVLink) · GPU 2 via relay 3 (IB)</text>
+<circle cx="607.0" cy="352.5" r="12" fill="#be123c" stroke="#ffffff" stroke-width="2"/><text x="607" y="357.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">5</text>
+<text x="631" y="347.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">PP send to GPU 27</text>
+<text x="631" y="368.40" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">layers 5–8 repeat on nodes 2–3</text>
+<circle cx="607.0" cy="412.5" r="12" fill="#0f766e" stroke="#ffffff" stroke-width="2"/><text x="607" y="417.05" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">6</text>
+<text x="631" y="407.58" font-size="17" fill="#111827" text-anchor="start" font-weight="bold">Leave K/V on GPUs 10, 11, 26, 27</text>
+<text x="631" y="428.50" font-size="14" fill="#646b78" text-anchor="start" font-weight="normal">the token never reaches the LM head</text>
+<line x1="32" y1="445" x2="897" y2="445" stroke="#e5e7eb" stroke-width="1"/>
+<text x="32" y="472.00" font-size="14" fill="#374151" text-anchor="start" font-weight="normal">Whole trip, 8 layers: 23 of 32 GPUs · 15 node crossings · 41 comm ops</text>
+<path d="M705.6,467.0 L731.6,467.0" fill="none" stroke="#374151" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah374151)"/>
+<text x="738.62" y="472.00" font-size="14" fill="#374151" text-anchor="start" font-weight="normal">NVLink</text>
+<path d="M801.7,467.0 L827.7,467.0" fill="none" stroke="#374151" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3.5" marker-end="url(#ah374151)"/>
+<text x="834.742" y="472.00" font-size="14" fill="#374151" text-anchor="start" font-weight="normal">InfiniBand</text>
+</svg>

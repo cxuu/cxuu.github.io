@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="417" viewBox="0 0 700 417" font-family="Helvetica, Arial, sans-serif">
+<defs></defs>
+<rect width="700" height="417" fill="#ffffff"/>
+<path d="M35,46.0 L30,46.0 L30,148.0 L35,148.0" fill="none" stroke="#9ca3af" stroke-width="1"/>
+<text x="18" y="101.29" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal" transform="rotate(-90 18 97.0)">stage 0 · L1–4</text>
+<path d="M35,224.0 L30,224.0 L30,326.0 L35,326.0" fill="none" stroke="#9ca3af" stroke-width="1"/>
+<text x="18" y="279.29" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal" transform="rotate(-90 18 275.0)">stage 1 · L5–8</text>
+<line x1="40" y1="186.0" x2="682" y2="186.0" stroke="#d1d5db" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="92.0" y="40.0" width="590.0" height="46.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="67.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 0</text>
+<rect x="92.0" y="108.0" width="590.0" height="46.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="135.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 1</text>
+<rect x="92.0" y="218.0" width="590.0" height="46.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="245.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 2</text>
+<rect x="92.0" y="286.0" width="590.0" height="46.0" rx="8" fill="#f9fafb" stroke="#eceef2" stroke-width="1"/>
+<text x="82" y="313.20" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">node 3</text>
+<rect x="100.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="128.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">0</text>
+<rect x="174.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="202.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">1</text>
+<rect x="248.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="276.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">2</text>
+<rect x="322.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="350.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">3</text>
+<rect x="396.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="424.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">4</text>
+<rect x="470.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="498.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">5</text>
+<rect x="544.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="572.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">6</text>
+<rect x="618.0" y="46.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="646.0" y="67.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">7</text>
+<rect x="100.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="128.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">8</text>
+<rect x="174.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="202.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">9</text>
+<rect x="248.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.2"/>
+<text x="276.0" y="135.81" font-size="13" fill="#115e59" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">10</text>
+<rect x="322.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.2"/>
+<text x="350.0" y="135.81" font-size="13" fill="#115e59" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">11</text>
+<rect x="396.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="424.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">12</text>
+<rect x="470.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="498.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">13</text>
+<rect x="544.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="572.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">14</text>
+<rect x="618.0" y="114.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="646.0" y="135.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">15</text>
+<rect x="100.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="128.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">16</text>
+<rect x="174.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="202.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">17</text>
+<rect x="248.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="276.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">18</text>
+<rect x="322.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="350.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">19</text>
+<rect x="396.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="424.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">20</text>
+<rect x="470.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="498.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">21</text>
+<rect x="544.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="572.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">22</text>
+<rect x="618.0" y="224.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="646.0" y="245.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">23</text>
+<rect x="96.5" y="288.5" width="63.0" height="41.0" rx="8" fill="none" stroke="#2563eb" stroke-width="2.2"/>
+<rect x="100.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#6b7280" stroke="#4b5563" stroke-width="1.2"/>
+<text x="128.0" y="313.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">24</text>
+<rect x="170.5" y="288.5" width="63.0" height="41.0" rx="8" fill="none" stroke="#2563eb" stroke-width="2.2"/>
+<rect x="174.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#6b7280" stroke="#4b5563" stroke-width="1.2"/>
+<text x="202.0" y="313.81" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">25</text>
+<rect x="248.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.2"/>
+<text x="276.0" y="313.81" font-size="13" fill="#115e59" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">26</text>
+<rect x="322.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.2"/>
+<text x="350.0" y="313.81" font-size="13" fill="#115e59" text-anchor="middle" font-weight="bold" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">27</text>
+<rect x="396.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="424.0" y="313.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">28</text>
+<rect x="470.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="498.0" y="313.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">29</text>
+<rect x="544.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="572.0" y="313.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">30</text>
+<rect x="618.0" y="292.0" width="56.0" height="34.0" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="646.0" y="313.81" font-size="13" fill="#646b78" text-anchor="middle" font-weight="normal" font-family="Menlo, 'DejaVu Sans Mono', 'Lucida Console', monospace">31</text>
+<rect x="361.4" y="106.0" width="24.6" height="15.0" rx="7.5" fill="#0f766e" stroke="#ffffff" stroke-width="1.5"/><text x="373.70775000000003" y="117.25" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">KV</text>
+<rect x="287.4" y="106.0" width="24.6" height="15.0" rx="7.5" fill="#0f766e" stroke="#ffffff" stroke-width="1.5"/><text x="299.70775000000003" y="117.25" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">KV</text>
+<rect x="361.4" y="284.0" width="24.6" height="15.0" rx="7.5" fill="#0f766e" stroke="#ffffff" stroke-width="1.5"/><text x="373.70775000000003" y="295.25" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">KV</text>
+<rect x="287.4" y="284.0" width="24.6" height="15.0" rx="7.5" fill="#0f766e" stroke="#ffffff" stroke-width="1.5"/><text x="299.70775000000003" y="295.25" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">KV</text>
+<rect x="209.6" y="284.0" width="28.4" height="15.0" rx="7.5" fill="#4b5563" stroke="#ffffff" stroke-width="1.5"/><text x="223.80724999999998" y="295.25" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">T−1</text>
+<path d="M252.0,156.0 L252.0,160.0 L374.0,160.0 L374.0,156.0" fill="none" stroke="#0f766e" stroke-width="1.3"/>
+<text x="313.0" y="175.20" font-size="12" fill="#0f766e" text-anchor="middle" font-weight="normal" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">layers 1–4</text>
+<path d="M252.0,334.0 L252.0,338.0 L374.0,338.0 L374.0,334.0" fill="none" stroke="#0f766e" stroke-width="1.3"/>
+<text x="313.0" y="353.20" font-size="12" fill="#0f766e" text-anchor="middle" font-weight="normal" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">layers 5–8</text>
+<path d="M104.0,334.0 L104.0,338.0 L226.0,338.0 L226.0,334.0" fill="none" stroke="#4b5563" stroke-width="1.3"/>
+<text x="165.0" y="353.29" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="normal" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">LM head (position T−1)</text>
+<rect x="91.8" y="365.5" width="24.6" height="15.0" rx="7.5" fill="#0f766e" stroke="#ffffff" stroke-width="1.5"/><text x="104.08325000000005" y="376.75" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">KV</text>
+<text x="123.37550000000005" y="377.29" font-size="12" fill="#374151" text-anchor="start" font-weight="normal">our token's K/V</text>
+<rect x="223.9" y="363.5" width="23.0" height="19.0" rx="5" fill="none" stroke="#2563eb" stroke-width="1.6"/><rect x="226.4" y="366.0" width="18.0" height="14.0" rx="3" fill="#6b7280" stroke="#4b5563" stroke-width="1"/>
+<text x="251.37550000000005" y="377.29" font-size="12" fill="#374151" text-anchor="start" font-weight="normal">LM head in use (vocab split over TP)</text>
+<rect x="468.8" y="365.5" width="28.4" height="15.0" rx="7.5" fill="#4b5563" stroke="#ffffff" stroke-width="1.5"/><text x="482.97625" y="376.75" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="bold">T−1</text>
+<text x="504.169" y="377.29" font-size="12" fill="#374151" text-anchor="start" font-weight="normal">last prompt position</text>
+</svg>
