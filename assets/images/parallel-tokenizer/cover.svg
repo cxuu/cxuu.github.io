@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="468" viewBox="0 0 1000 468" font-family="Helvetica, Arial, sans-serif"><rect width="1000" height="468" fill="#ffffff"/><line x1="84.0" y1="247.7" x2="964.0" y2="247.7" stroke="#e5e7eb" stroke-width="1"/>
+<text x="76.0" y="252.0" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">500 ms</text>
+<line x1="84.0" y1="163.4" x2="964.0" y2="163.4" stroke="#e5e7eb" stroke-width="1"/>
+<text x="76.0" y="167.7" font-size="12" fill="#646b78" text-anchor="end" font-weight="normal">1 s</text>
+<line x1="84.0" y1="332.0" x2="964.0" y2="332.0" stroke="#9ca3af" stroke-width="1"/>
+<text x="90.0" y="42.5" font-size="18" fill="#111827" text-anchor="start" font-weight="bold">BERT</text>
+<text x="90.0" y="63.7" font-size="13" fill="#646b78" text-anchor="start" font-weight="normal">WordPiece</text>
+<rect x="91.1" y="329.1" width="17.0" height="2.9" rx="3" fill="#cbd2db"/>
+<rect x="111.1" y="331.1" width="17.0" height="2.0" rx="3" fill="#15803d"/>
+<text x="99.6" y="324.4" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">17</text>
+<text x="109.6" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">100 KB</text>
+<rect x="142.4" y="314.9" width="17.0" height="17.1" rx="3" fill="#cbd2db"/>
+<rect x="162.4" y="328.5" width="17.0" height="3.5" rx="3" fill="#15803d"/>
+<text x="150.9" y="310.3" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">101</text>
+<text x="160.9" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">500 KB</text>
+<rect x="193.6" y="299.2" width="17.0" height="32.8" rx="3" fill="#cbd2db"/>
+<rect x="213.6" y="325.6" width="17.0" height="6.4" rx="3" fill="#15803d"/>
+<text x="202.1" y="294.5" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">195</text>
+<text x="212.1" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">1 MB</text>
+<rect x="244.9" y="196.5" width="17.0" height="135.5" rx="3" fill="#cbd2db"/>
+<rect x="264.9" y="307.2" width="17.0" height="24.8" rx="3" fill="#15803d"/>
+<text x="253.4" y="191.9" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">804</text>
+<text x="263.4" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">4 MB</text>
+<rect x="270.4" y="196.5" width="6.0" height="96.7" rx="1" fill="#e8739e"/><polygon points="264.4,292.2 282.4,292.2 273.4,306.2" fill="#e8739e"/>
+<text x="273.4" y="175.7" font-size="20" fill="#e8739e" text-anchor="middle" font-weight="bold">5.5x</text>
+<text x="315.0" y="42.5" font-size="18" fill="#111827" text-anchor="start" font-weight="bold">Llama 3</text>
+<text x="315.0" y="63.7" font-size="13" fill="#646b78" text-anchor="start" font-weight="normal">byte-level BPE</text>
+<rect x="316.1" y="328.9" width="17.0" height="3.1" rx="3" fill="#cbd2db"/>
+<rect x="336.1" y="331.1" width="17.0" height="2.0" rx="3" fill="#15803d"/>
+<text x="324.6" y="324.2" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">19</text>
+<text x="334.6" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">100 KB</text>
+<rect x="367.4" y="315.2" width="17.0" height="16.8" rx="3" fill="#cbd2db"/>
+<rect x="387.4" y="328.5" width="17.0" height="3.5" rx="3" fill="#15803d"/>
+<text x="375.9" y="310.6" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">99</text>
+<text x="385.9" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">500 KB</text>
+<rect x="418.6" y="299.7" width="17.0" height="32.3" rx="3" fill="#cbd2db"/>
+<rect x="438.6" y="325.2" width="17.0" height="6.8" rx="3" fill="#15803d"/>
+<text x="427.1" y="295.0" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">192</text>
+<text x="437.1" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">1 MB</text>
+<rect x="469.9" y="196.2" width="17.0" height="135.8" rx="3" fill="#cbd2db"/>
+<rect x="489.9" y="304.5" width="17.0" height="27.5" rx="3" fill="#15803d"/>
+<text x="478.4" y="191.6" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">805</text>
+<text x="488.4" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">4 MB</text>
+<rect x="495.4" y="196.2" width="6.0" height="94.3" rx="1" fill="#e8739e"/><polygon points="489.4,289.5 507.4,289.5 498.4,303.5" fill="#e8739e"/>
+<text x="498.4" y="175.4" font-size="20" fill="#e8739e" text-anchor="middle" font-weight="bold">4.9x</text>
+<text x="540.0" y="42.5" font-size="18" fill="#111827" text-anchor="start" font-weight="bold">ALBERT</text>
+<text x="540.0" y="63.7" font-size="13" fill="#646b78" text-anchor="start" font-weight="normal">Unigram</text>
+<rect x="541.1" y="327.8" width="17.0" height="4.2" rx="3" fill="#cbd2db"/>
+<rect x="561.1" y="329.9" width="17.0" height="2.1" rx="3" fill="#15803d"/>
+<text x="549.6" y="323.1" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">25</text>
+<text x="559.6" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">100 KB</text>
+<rect x="592.4" y="308.3" width="17.0" height="23.7" rx="3" fill="#cbd2db"/>
+<rect x="612.4" y="323.7" width="17.0" height="8.3" rx="3" fill="#15803d"/>
+<text x="600.9" y="303.7" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">140</text>
+<text x="610.9" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">500 KB</text>
+<rect x="643.6" y="280.7" width="17.0" height="51.3" rx="3" fill="#cbd2db"/>
+<rect x="663.6" y="315.6" width="17.0" height="16.4" rx="3" fill="#15803d"/>
+<text x="652.1" y="276.0" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">304</text>
+<text x="662.1" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">1 MB</text>
+<rect x="694.9" y="111.2" width="17.0" height="220.8" rx="3" fill="#cbd2db"/>
+<rect x="714.9" y="263.5" width="17.0" height="68.5" rx="3" fill="#15803d"/>
+<text x="703.4" y="106.5" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">1310</text>
+<text x="713.4" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">4 MB</text>
+<rect x="720.4" y="111.2" width="6.0" height="138.3" rx="1" fill="#e8739e"/><polygon points="714.4,248.5 732.4,248.5 723.4,262.5" fill="#e8739e"/>
+<text x="723.4" y="90.4" font-size="20" fill="#e8739e" text-anchor="middle" font-weight="bold">3.2x</text>
+<text x="765.0" y="42.5" font-size="18" fill="#111827" text-anchor="start" font-weight="bold">RoBERTa</text>
+<text x="765.0" y="63.7" font-size="13" fill="#646b78" text-anchor="start" font-weight="normal">byte-level BPE</text>
+<rect x="766.1" y="328.8" width="17.0" height="3.2" rx="3" fill="#cbd2db"/>
+<rect x="786.1" y="329.9" width="17.0" height="2.1" rx="3" fill="#15803d"/>
+<text x="774.6" y="324.1" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">19</text>
+<text x="784.6" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">100 KB</text>
+<rect x="817.4" y="314.8" width="17.0" height="17.2" rx="3" fill="#cbd2db"/>
+<rect x="837.4" y="323.0" width="17.0" height="9.0" rx="3" fill="#15803d"/>
+<text x="825.9" y="310.1" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">102</text>
+<text x="835.9" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">500 KB</text>
+<rect x="868.6" y="295.6" width="17.0" height="36.4" rx="3" fill="#cbd2db"/>
+<rect x="888.6" y="313.7" width="17.0" height="18.3" rx="3" fill="#15803d"/>
+<text x="877.1" y="290.9" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">216</text>
+<text x="887.1" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">1 MB</text>
+<rect x="919.9" y="176.0" width="17.0" height="156.0" rx="3" fill="#cbd2db"/>
+<rect x="939.9" y="257.6" width="17.0" height="74.4" rx="3" fill="#15803d"/>
+<text x="928.4" y="171.3" font-size="12" fill="#374151" text-anchor="middle" font-weight="normal">926</text>
+<text x="938.4" y="352.3" font-size="12" fill="#646b78" text-anchor="middle" font-weight="normal">4 MB</text>
+<rect x="945.4" y="176.0" width="6.0" height="67.7" rx="1" fill="#e8739e"/><polygon points="939.4,242.6 957.4,242.6 948.4,256.6" fill="#e8739e"/>
+<text x="948.4" y="155.2" font-size="20" fill="#e8739e" text-anchor="middle" font-weight="bold">2.1x</text>
+<text x="524.0" y="372.7" font-size="13" fill="#374151" text-anchor="middle" font-weight="normal">Input size</text>
+<rect x="84.0" y="394.0" width="12.0" height="12.0" rx="2" fill="#cbd2db"/>
+<text x="102.0" y="404.7" font-size="13" fill="#374151" text-anchor="start" font-weight="normal">serial encode()</text>
+<rect x="224.0" y="394.0" width="12.0" height="12.0" rx="2" fill="#15803d"/>
+<text x="242.0" y="404.7" font-size="13" fill="#374151" text-anchor="start" font-weight="normal">encode_parallel_single()</text>
+<text x="964.0" y="404.7" font-size="13" fill="#646b78" text-anchor="end" font-weight="normal">gray: serial time in ms · pink: speedup at 4 MB</text>
+<line x1="36.0" y1="424.0" x2="964.0" y2="424.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="36.0" y="451.0" font-size="14" fill="#374151" text-anchor="start" font-weight="normal">Rust, 12 threads · Apple M2 Max (8 performance + 4 efficiency cores) · median times · 54 of 56 Hub tokenizers qualify</text>
+<text x="964.0" y="451.0" font-size="14" fill="#646b78" text-anchor="end" font-weight="normal">github.com/cxuu/tokenizers</text></svg>
