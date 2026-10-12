@@ -1,1 +1,55 @@
-jQuery(document).ready(function(t){function e(){var e=t(this).scrollTop();Math.abs(o-e)<=a||(o<e&&i<e?(t("nav").removeClass("nav-down").addClass("nav-up"),t(".nav-up").css("top",-t("nav").outerHeight()+"px")):e+t(window).height()<t(document).height()&&(t("nav").removeClass("nav-up").addClass("nav-down"),t(".nav-up, .nav-down").css("top","0px")),o=e)}var n;t(document).scroll(function(){280<t(this).scrollTop()?t(".alertbar").fadeIn():t(".alertbar").fadeOut()}),t(function(){function e(e){(e=e.length?e:t("[name="+this.hash.slice(1)+"]")).length&&t("html,body").animate({scrollTop:e.offset().top},1e3)}setTimeout(function(){location.hash&&(window.scrollTo(0,0),target=location.hash.split("#"),e(t("#"+target[1])))},1),t("a[href*=\\#]:not([href=\\#])").click(function(){if(location.pathname.replace(/^\//,"")==this.pathname.replace(/^\//,"")&&location.hostname==this.hostname)return e(t(this.hash)),!1})});var o=0,a=5,i=t("nav").outerHeight();t(window).scroll(function(){n=!0}),setInterval(function(){n&&(e(),n=!1)},250),t(".site-content").css("margin-top",t("header").outerHeight()+"px"),t(document).on("click",".spoiler",function(){t(this).removeClass("spoiler")})});var loadDeferredStyles=function(){var e=document.getElementById("deferred-styles"),t=document.createElement("div");t.innerHTML=e.textContent,document.body.appendChild(t),e.parentElement.removeChild(e)},raf=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;raf?raf(function(){window.setTimeout(loadDeferredStyles,0)}):window.addEventListener("load",loadDeferredStyles);
+(function () {
+    'use strict';
+
+    var nav = document.querySelector('.mediumnavigation');
+    var toggle = document.querySelector('.navbar-toggler');
+    var menu = document.getElementById('navbarMediumish');
+    var alertbar = document.querySelector('.alertbar');
+    var lastScroll = window.pageYOffset;
+    var scheduled = false;
+
+    function showNav() {
+        nav.style.top = '0px';
+    }
+
+    function setMenu(open) {
+        menu.classList.toggle('show', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        showNav();
+    }
+
+    toggle.addEventListener('click', function () {
+        setMenu(!menu.classList.contains('show'));
+    });
+    // Search results open inside the menu; closing it under them would leave the page unable to scroll.
+    nav.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && menu.classList.contains('show') && !document.body.classList.contains('modal-open')) {
+            setMenu(false);
+            toggle.focus();
+        }
+    });
+    nav.addEventListener('focusin', showNav);
+
+    function onScroll() {
+        // Clamp both ends so Safari's overscroll bounce doesn't count as scrolling.
+        var scroll = Math.max(0, Math.min(window.pageYOffset, document.documentElement.scrollHeight - window.innerHeight));
+        if (alertbar) alertbar.style.display = scroll > 280 ? 'block' : 'none';
+        if (Math.abs(scroll - lastScroll) > 5) {
+            // Chrome focuses the toggler on click and tap, so its focus doesn't pin the nav.
+            var focused = document.activeElement;
+            var keepVisible = (focused !== toggle && nav.contains(focused)) || menu.classList.contains('show');
+            var hide = !keepVisible && scroll > lastScroll && scroll > nav.offsetHeight;
+            nav.style.top = hide ? -nav.offsetHeight + 'px' : '0px';
+            lastScroll = scroll;
+        }
+        scheduled = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!scheduled) {
+            scheduled = true;
+            window.requestAnimationFrame(onScroll);
+        }
+    }, { passive: true });
+    onScroll();
+})();

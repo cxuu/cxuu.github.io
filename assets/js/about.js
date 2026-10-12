@@ -1,1 +1,41 @@
-var rotate_description=function(){var i=$("#self_description"),t=window._description_data[window._description_idx];window._description_idx++,window._description_idx>=window._description_data.length&&(window._description_data=_fisher_yates(window._description_data),window._description_idx=0),i.fadeOut(function(){i.html(t),i.fadeIn(),window.setTimeout(rotate_description,3e3)})},_fisher_yates=function(i){return i},_page_setup=function(){$.get("/assets/descriptions.json",function(i){window._description_idx=0,window._description_data=_fisher_yates(i),rotate_description()})};_page_setup();
+(function () {
+    'use strict';
+
+    var span = document.getElementById('self_description');
+    if (!span) return;
+
+    var descriptions = JSON.parse(span.getAttribute('data-descriptions'));
+    if (descriptions.length < 2) return;
+
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var index = 0;
+    var timer;
+    var fadeDuration = 400;
+    var holdDuration = 3000;
+
+    function rotate() {
+        span.classList.add('is-fading');
+        timer = window.setTimeout(function () {
+            index = (index + 1) % descriptions.length;
+            span.textContent = descriptions[index];
+            span.classList.remove('is-fading');
+            // Allow the fade-in to finish before the next three-second hold.
+            timer = window.setTimeout(rotate, fadeDuration + holdDuration);
+        }, fadeDuration);
+    }
+
+    function update() {
+        window.clearTimeout(timer);
+        span.classList.remove('is-fading');
+        if (!motion.matches) {
+            timer = window.setTimeout(rotate, holdDuration);
+        }
+    }
+
+    if (motion.addEventListener) {
+        motion.addEventListener('change', update);
+    } else {
+        motion.addListener(update);
+    }
+    update();
+})();
