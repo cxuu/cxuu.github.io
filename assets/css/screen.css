@@ -615,8 +615,27 @@ blockquote {
     top: 50px;
 }
 
+/* A tiny responsive prose inset; keep the cover and outer grid unchanged. */
+.layout-post .article-post {
+    --post-text-inset: .25rem;
+    padding-left: var(--post-text-inset);
+    padding-right: var(--post-text-inset);
+}
+
+@media (min-width:768px) {
+    .layout-post .article-post {
+        --post-text-inset: .5rem;
+    }
+}
+
 .figure-wide {
     text-align: center;
+}
+
+/* Undo the prose inset so figures retain their original width and center. */
+.layout-post .article-post > .figure-wide {
+    margin-left: calc(0px - var(--post-text-inset));
+    margin-right: calc(0px - var(--post-text-inset));
 }
 
 @media (min-width:1024px) {
@@ -630,13 +649,13 @@ blockquote {
         display: block;
     }
 
-    /* Let post figures overhang the text. The share column (col-md-2) is a
-       quarter as wide as the text (col-md-8), so -25% reaches about its left
-       edge; 3rem clears the "Share" label by about a grid gutter. Keep the
-       "figure" sizes in _plugins/responsive_images.rb in step. */
+    /* The share column is a quarter of the original post column; 3rem clears
+       its label. Percentages now use the inset prose width, so subtract 1.5
+       insets to preserve the original figure box (1.5 * column - 6rem).
+       The "figure" sizes in _plugins/responsive_images.rb stay unchanged. */
     .layout-post .article-post > .figure-wide {
-        margin-left: calc(3rem - 25%);
-        margin-right: calc(3rem - 25%);
+        margin-left: calc(3rem - 25% - 1.5 * var(--post-text-inset));
+        margin-right: calc(3rem - 25% - 1.5 * var(--post-text-inset));
     }
 }
 
