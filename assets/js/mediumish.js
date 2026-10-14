@@ -1,3 +1,4 @@
+// Navbar visibility, mobile-menu controls and lazy search loading; no Bootstrap JS.
 (function () {
     'use strict';
 
@@ -60,4 +61,57 @@
         }
     }, { passive: true });
     onScroll();
+
+    var form = document.querySelector('form.bd-search');
+    var input = document.getElementById('lunrsearch');
+    if (!form || !input) return;
+
+    // idle allows retry after either download fails; loading owns one script chain;
+    // ready reuses the index. A pending submit reads the latest input, not a snapshot.
+    var state = 'idle';
+    var searchWhenReady = false;
+
+    function search() {
+        var term = input.value.trim();
+        if (term) lunr_search(term);
+    }
+
+    function addScript(src, onload) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        script.onload = onload;
+        script.onerror = function () {
+            state = 'idle';
+            searchWhenReady = false;
+            script.parentNode.removeChild(script);
+        };
+        document.body.appendChild(script);
+    }
+
+    function load() {
+        if (state !== 'idle') return;
+        state = 'loading';
+        addScript(form.getAttribute('data-search-vendor'), function () {
+            addScript(form.getAttribute('data-search-engine'), function () {
+                state = 'ready';
+                if (searchWhenReady) {
+                    searchWhenReady = false;
+                    search();
+                }
+            });
+        });
+    }
+
+    input.addEventListener('focus', load);
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!input.value.trim()) return;
+        if (state === 'ready') {
+            search();
+        } else {
+            searchWhenReady = true;
+            load();
+        }
+    });
 })();

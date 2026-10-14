@@ -1,3 +1,4 @@
+// Rotate About's fallback tagline with opacity fades; reduced motion stays static.
 (function () {
     'use strict';
 
@@ -10,7 +11,7 @@
     var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     var index = 0;
     var timer;
-    var fadeDuration = 400;
+    var fadeDuration = 400; // Match .self-description's opacity transition in screen.css.
     var holdDuration = 3000;
 
     function rotate() {
