@@ -662,12 +662,15 @@ blockquote {
 }
 
 @media (max-width:999px) {
+    /* Keep the in-flow newsletter visible. The scroll handler's inline display
+       changes are only for the fixed desktop bar; hiding this box shifts content. */
     .alertbar {
-        position: relative !Important;
+        position: relative !important;
+        display: block !important;
         margin-bottom: 20px;
         margin-top: 20px;
-        box-shadow: none !Important;
-        padding-right: 14px !Important;
+        box-shadow: none !important;
+        padding-right: 14px !important;
     }
 
     #comments {
