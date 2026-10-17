@@ -3,6 +3,10 @@ Template Name: Mediumish
 Copyright: Sal, WowThemes.net, https://www.wowthemes.net
 License: https://www.wowthemes.net/freebies-license/
 */
+
+/* Site/theme rules follow Bootstrap in main.scss; Rouge stays in _sass/_syntax.scss. */
+
+/* Fonts and shared document styles. */
 @font-face {
     font-family: Merriweather;
     font-style: normal;
@@ -66,7 +70,7 @@ html {
 
 a {
     color: #00ab6b;
-    transition: all 0.2s;
+    transition: color 0.2s;
 }
 
 a:hover {
@@ -75,7 +79,6 @@ a:hover {
 }
 
 pre {
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
     border: #E3EDF3 1px solid;
     width: 100%;
@@ -88,7 +91,6 @@ pre {
     border-radius: 0px;
     line-height: 1.6;
     color: #333;
-    margin-bottom: -rem;
 }
 
 td.rouge-code pre {
@@ -100,7 +102,6 @@ td.rouge-gutter pre {
 }
 
 .mediumnavigation {
-    background: rgba(255, 255, 255, .97);
     box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .15);
     transition: top 0.2s ease-in-out;
 }
@@ -124,10 +125,6 @@ td.rouge-gutter pre {
     font-weight: 300;
 }
 
-.center-img {
-    text-align: center;
-}
-
 section {
     margin-bottom: 20px;
 }
@@ -149,7 +146,6 @@ li code {
 .section-title h1,
 .section-title h2 {
     border-bottom: 1px solid rgba(0, 0, 0, .125);
-    margin-bottom: 25px;
     font-weight: 700;
     font-size: 1.4rem;
     margin-bottom: 27px;
@@ -173,14 +169,6 @@ li code {
     margin-bottom: 0rem;
 }
 
-@media (min-width:576px) {
-    .card-columns.listfeaturedtag {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-    }
-}
-
 @media (min-width:992px) {
     .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: 0.8rem;
@@ -188,6 +176,7 @@ li code {
     }
 }
 
+/* Featured and regular post cards. */
 .listfeaturedtag {
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .25rem;
@@ -214,20 +203,6 @@ li code {
 .listfeaturedtag .card,
 .card-footer {
     border: 0;
-}
-
-.listfeaturedtag .thumbnail {
-    background-size: cover;
-    height: 100%;
-    display: block;
-    background-position: 38% 22% !important;
-    background-origin: border-box !important;
-    border-top-left-radius: .25rem;
-    border-bottom-left-radius: .25rem;
-}
-
-.listfeaturedtag .card-block {
-    padding-left: 0;
 }
 
 .listfeaturedtag h2.card-title,
@@ -267,84 +242,18 @@ li code {
     margin-bottom: 15px;
 }
 
-.author-thumb {
-    width: 40px;
-    height: 40px;
-    margin-right: 13px;
-    border-radius: 100%;
-}
-
-.post-top-meta {
-    margin-bottom: 2rem;
-}
-
-.post-top-meta .author-thumb {
-    width: 72px;
-    height: 72px;
-}
-
-.post-top-meta.authorpage .author-thumb {
-    margin-top: 40px;
-}
-
-.post-top-meta span {
-    font-size: 0.9rem;
-    color: rgba(0, 0, 0, .44);
-    display: inline-block;
-}
-
-.post-top-meta .author-description {
-    margin-bottom: 5px;
-    margin-top: 5px;
-    font-size: 0.95rem;
-}
-
 .toc ul {
     list-style: decimal;
     font-weight: 400;
     font-size: 1rem;
 }
 
-.author-meta {
-    flex: 1 1 auto;
-    white-space: nowrap !important;
-    text-overflow: ellipsis !important;
-    overflow: hidden !important;
-}
-
-span.post-name,
-span.post-date,
-span.author-meta {
+span.post-date {
     display: inline-block;
-}
-
-span.post-date,
-span.post-read {
     color: rgba(0, 0, 0, .44);
 }
 
-span.post-read-more {
-    align-items: center;
-    display: inline-block;
-    float: right;
-    margin-top: 8px;
-}
-
-span.post-read-more a {
-    color: rgba(0, 0, 0, .44);
-}
-
-span.post-name a,
-span.post-read-more a:hover {
-    color: rgba(0, 0, 0, .8);
-}
-
-.dot:after {
-    content: "·";
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
+/* Navigation and reading layouts. */
 .mediumnavigation .form-control {
     font-size: 0.8rem;
     border-radius: 30px;
@@ -353,42 +262,12 @@ span.post-read-more a:hover {
     min-width: 180px;
 }
 
-.mediumnavigation .form-inline {
-    margin-left: 15px;
-}
-
-.mediumnavigation .form-inline .btn {
-    margin-left: -50px;
-    border: 0;
-    border-radius: 30px;
-    cursor: pointer;
-}
-
-.mediumnavigation .form-inline .btn:hover,
-.mediumnavigation .form-inline .btn:active {
-    background: transparent;
-    color: green;
-}
-
 .mediumnavigation .navbar-brand {
     font-weight: 500;
 }
 
-.mediumnavigation .dropdown-menu {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    margin: .5rem 0 0;
-}
-
-.mediumnavigation .nav-item,
-.dropdown-menu {
+.mediumnavigation .nav-item {
     font-size: 0.9rem;
-}
-
-.mediumnavigation .search-icon {
-    margin-left: -40px;
-    display: inline-block;
-    margin-top: 3px;
-    cursor: pointer;
 }
 
 .mediumnavigation .navbar-brand img {
@@ -422,10 +301,6 @@ span.post-read-more a:hover {
 
 .book-desc {
     padding-left: 0.92rem;
-}
-
-.link-dark {
-    color: rgba(0, 0, 0, .8);
 }
 
 .article-post,
@@ -603,10 +478,6 @@ blockquote {
     margin-left: 0;
 }
 
-.svgIcon {
-    vertical-align: middle;
-}
-
 .sticky-top-offset {
     top: 100px;
 }
@@ -678,7 +549,7 @@ blockquote {
     }
 
     .jumbotron.fortags {
-        margin-bottom: 0 !Important;
+        margin-bottom: 0 !important;
     }
 
     .alertbar form {
@@ -691,13 +562,13 @@ blockquote {
     }
 
     .alertbar input[type="submit"] {
-        border-radius: 3px !Important;
+        border-radius: 3px !important;
     }
 
     .alertbar input[type="email"] {
-        margin-right: 0px !Important;
+        margin-right: 0px !important;
         display: block;
-        border-right: 1px solid #ddd !Important;
+        border-right: 1px solid #ddd !important;
         margin-bottom: 10px;
     }
 
@@ -715,25 +586,9 @@ blockquote {
         margin-top: 30px;
     }
 
-    .listfeaturedtag .card-block {
-        padding: 20px;
-    }
-
     .footer {
         margin-top: 0px;
         margin-bottom: 0px;
-    }
-}
-
-@media (max-width:1024px) {
-    .post-top-meta .col-md-10 {
-        text-align: center;
-    }
-}
-
-@media (max-width:767px) {
-    .post-top-meta.authorpage {
-        text-align: center;
     }
 }
 
@@ -741,17 +596,6 @@ blockquote {
 .share a {
     color: rgba(0, 0, 0, .44);
     fill: rgba(0, 0, 0, .44);
-}
-
-.graybg {
-    background-color: #fafafa;
-    padding: 40px 0 46px;
-    position: relative;
-}
-
-.listrelated .card {
-    box-shadow: 0 1px 7px rgba(0, 0, 0, .05);
-    border: 0;
 }
 
 ul.tags {
@@ -777,37 +621,7 @@ ul.tags li a:hover {
     text-decoration: none;
 }
 
-.margtop3rem {
-    margin-top: 3rem;
-}
-
-.btn.follow {
-    border-color: #02B875;
-    color: #1C9963;
-    padding: 3px 10px;
-    text-align: center;
-    border-radius: 999em;
-    font-size: 0.85rem;
-    display: inline-block;
-}
-
-.btn.subscribe {
-    background-color: #1C9963;
-    border-color: #1C9963;
-    color: rgba(255, 255, 255, 1);
-    fill: rgba(255, 255, 255, 1);
-    border-radius: 30px;
-    font-size: 0.85rem;
-    margin-left: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.post-top-meta .btn.follow {
-    margin-left: 5px;
-    margin-top: -4px;
-}
-
+/* Newsletter: fixed on desktop, in flow below 1000px (see override above). */
 .alertbar {
     box-shadow: 0 -3px 10px 0 rgba(0, 0, 0, .0785);
     position: fixed;
@@ -853,76 +667,8 @@ ul.tags li a:hover {
     cursor: pointer;
 }
 
-.form-control::-webkit-input-placeholder {
+.form-control::placeholder {
     color: rgba(0, 0, 0, .5);
-}
-
-.form-control:-moz-placeholder {
-    color: rgba(0, 0, 0, .5);
-}
-
-.form-control::-moz-placeholder {
-    color: rgba(0, 0, 0, .5);
-}
-
-.form-control:-ms-input-placeholder {
-    color: rgba(0, 0, 0, .5);
-}
-
-.form-control::-ms-input-placeholder {
-    color: rgba(0, 0, 0, .5);
-}
-
-.authorpage h1 {
-    font-weight: 700;
-    font-size: 30px;
-}
-
-.post-top-meta.authorpage .author-thumb {
-    float: none;
-}
-
-.authorpage .author-description {
-    font-size: 1rem;
-    color: rgba(0, 0, 0, .6);
-}
-
-.post-top-meta.authorpage .btn.follow {
-    padding: 7px 20px;
-    margin-top: 10px;
-    margin-left: 0;
-    font-size: 0.9rem;
-}
-
-.graybg.authorpage {
-    border-top: 1px solid #f0f0f0;
-}
-
-.authorpostbox {
-    width: 760px;
-    margin: 0px auto;
-    margin-bottom: 1.5rem;
-    max-width: 100%;
-}
-
-.authorpostbox .img-thumb {
-    width: 100%;
-}
-
-.sociallinks {
-    margin: 1rem 0;
-}
-
-.sociallinks a {
-    background: #666;
-    color: #fff;
-    width: 22px;
-    height: 22px;
-    display: inline-block;
-    text-align: center;
-    line-height: 22px;
-    border-radius: 50%;
-    font-size: 12px;
 }
 
 #comments {
@@ -931,11 +677,6 @@ ul.tags li a:hover {
 }
 
 .h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
 h1,
 h2,
 h3,
@@ -945,12 +686,6 @@ h6 {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.article-post .h1,
-.article-post .h2,
-.article-post .h3,
-.article-post .h4,
-.article-post .h5,
-.article-post .h6,
 .article-post h1,
 .article-post h2,
 .article-post h3,
@@ -959,12 +694,6 @@ h6 {
 .article-post h6 {
     font-weight: 300;
     margin-bottom: 1.5rem;
-}
-
-.article-post img.shadow {
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
 }
 
 .layout-page .article-post {
@@ -981,6 +710,7 @@ img {
     height: auto;
 }
 
+/* Index pagination and Explore band. */
 .bottompagination span.navigation {
     display: block;
     font-size: 0.93rem;
@@ -999,10 +729,6 @@ img {
 
 .pointerup .icon {
     color: #eaeaea;
-}
-
-.bottompagination span.navigation i {
-    display: inline-block;
 }
 
 span.navigation {
@@ -1035,15 +761,6 @@ iframe {
         height: 350px;
         background-image: url(../images/jumbotron-1600.webp);
     }
-
-    .jumbotron.fortags .col-md-4 {
-        background: rgba(0, 0, 0, 0.75);
-        color: #fff;
-    }
-
-    .jumbotron.fortags .row {
-        margin: 0;
-    }
 }
 
 .jumbotron.fortags a {
@@ -1065,50 +782,90 @@ iframe {
     margin-bottom: 30px;
 }
 
-.flex-first {
-    -webkit-box-ordinal-group: 0;
-    -webkit-order: -1;
-    -ms-flex-order: -1;
-    order: -1;
-}
-
-@media (min-width: 768px) {
-    .flex-md-unordered {
-        -webkit-box-ordinal-group: 1;
-        -webkit-order: 1;
-        -ms-flex-order: 1;
-        order: 1;
-    }
-
-    .flex-first {
-        -webkit-box-ordinal-group: 0;
-        -webkit-order: 1;
-        -ms-flex-order: 1;
-        order: 1;
-    }
-}
-
 @media (max-width: 768px) {
     .share {
         margin-top: 30px;
     }
 }
 
-.sticky-top-80 {
-    top: 80px;
-}
-
-div.article-post>table {
+/* Only top-level article tables get borders and responsive scrolling.
+   Rouge's nested tables and tables elsewhere keep their own styles. */
+div.article-post > table {
     width: 100%;
     margin-bottom: 2rem;
     border: 1px solid #ddd;
     border-collapse: collapse;
 }
 
-div.article-post>table td, th {
+div.article-post > table td,
+div.article-post > table th {
     border: 1px solid #ddd;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
-div.article-post>table tr:hover {background-color:#f5f5f5;}
+div.article-post > table tr:hover {
+    background-color: #f5f5f5;
+}
+
+@media (max-width:991.98px) {
+    div.article-post > table {
+        display: block;
+        border: 0;
+        width: max-content;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    div.article-post > table code {
+        white-space: nowrap;
+    }
+}
+
+/* Bootstrap pagination overrides. */
+.pagination > li > a {
+    background-color: white;
+    color: #00ab6b;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover {
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a {
+    color: white;
+    background-color: #00ab6b !important;
+    border: solid 1px #00ab6b !important;
+}
+
+.pagination > .active > a:hover {
+    background-color: #00ab6b !important;
+    border: solid 1px #00ab6b;
+}
+
+/* Search results, built by assets/js/lunrsearchengine.js. */
+.lunrsearchresult a {
+    display: block;
+    color: #777;
+}
+
+.lunrsearchresult a:hover,
+.lunrsearchresult a:focus {
+    text-decoration: none;
+}
+
+.lunrsearchresult .title {
+    color: #d9230f;
+}
+
+.lunrsearchresult .url {
+    color: silver;
+}
+
+.lunrsearchresult a:hover .title,
+.lunrsearchresult a:focus .title {
+    text-decoration: underline;
+}
